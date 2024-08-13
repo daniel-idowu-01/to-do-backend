@@ -5,8 +5,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon server.js",
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest ./task.test.js --forceExit"
   },
   "author": "",
   "license": "ISC",
@@ -15,5 +15,9 @@
     "express": "^4.19.2",
     "mongoose": "^8.5.1",
     "nodemon": "^3.1.4"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^7.0.0"
   }
 }
