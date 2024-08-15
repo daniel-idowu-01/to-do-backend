@@ -1,7 +1,9 @@
 import express from "express";
 import dotenv from "dotenv";
 import taskRoute from "./routes/taskRoute.js";
+import userRoute from "./routes/userRoute.js";
 import mongoose from "mongoose";
+import User from "./models/User.js";
 
 const app = express();
 dotenv.config();
@@ -22,5 +24,6 @@ app.get("/", async (req, res) => {
 });
 
 app.use("/api/task", taskRoute);
+app.use("/api/user", userRoute);
 
 export default app;
