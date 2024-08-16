@@ -2,11 +2,11 @@ import mongoose from "mongoose";
 
 const taskSchema = mongoose.Schema(
   {
-    userId: {
+    /* userId: {
       type: mongoose.Types.ObjectId,
       ref: "",
       required: true,
-    },
+    }, */
     title: {
       type: String,
       required: true,
@@ -16,7 +16,7 @@ const taskSchema = mongoose.Schema(
     },
     due_date: {
       type: String,
-      required: true,
+      /* required: true, */
     },
     priority: {
       type: String,

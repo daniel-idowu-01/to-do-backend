@@ -72,6 +72,8 @@ const loginUser = async (req, res) => {
     process.env.JWT_SECRET
   );
 
+  console.log(token)
+
   res.cookie("token", token, {
     httpOnly: true,
     maxAge: 30 * 24 * 60 * 60 * 1000,

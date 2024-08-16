@@ -14,8 +14,9 @@ const createTask = async (req, res) => {
   const data = req.body;
   try {
     const newTask = await Task.create(data);
-    res.status(201).json({ success: true, data: newTask });
+    res.status(201).json({ success: true, data: "Task created successfully!" });
   } catch (error) {
+    console.log(error)
     res.status(400).json({ success: false, data: "Cannot create task" });
   }
 };

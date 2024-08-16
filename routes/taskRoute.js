@@ -11,7 +11,7 @@ const router = expressRouter();
 
 router.get("/", getAuth, getAllTask);
 
-router.post("/", createTask);
+router.post("/", getAuth, createTask);
 
 router.put("/update/:id", updateTask);
 
