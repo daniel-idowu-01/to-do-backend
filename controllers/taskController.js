@@ -12,11 +12,15 @@ const getAllTask = async (req, res) => {
 // function to create task
 const createTask = async (req, res) => {
   const data = req.body;
+  const { id } = req.user;
   try {
-    const newTask = await Task.create(data);
+    const newTask = await Task.create({
+      userId: id,
+      ...data,
+    });
     res.status(201).json({ success: true, data: "Task created successfully!" });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     res.status(400).json({ success: false, data: "Cannot create task" });
   }
 };
@@ -43,7 +47,7 @@ const updateTask = async (req, res) => {
 const deleteTask = async (req, res) => {
   const { id } = req.params;
 
-  const deletedTask = await Task.findByIdAndDelete(id)
+  const deletedTask = await Task.findByIdAndDelete(id);
   if (deletedTask) {
     res.status(201).json({ success: true, data: deletedTask });
   } else {
@@ -51,4 +55,17 @@ const deleteTask = async (req, res) => {
   }
 };
 
-export { getAllTask, createTask, updateTask, deleteTask };
+// function to get task by user id
+const getTaskByUserId = async (req, res) => {
+  const { id } = req.user;
+
+  const task = await Task.findOne({ userId: id });
+
+  if (!task) {
+    return res.status(404).json({ success: false, data: "No task found!" });
+  }
+
+  res.status(201).json({ success: true, data: task });
+};
+
+export { getAllTask, createTask, updateTask, deleteTask, getTaskByUserId };

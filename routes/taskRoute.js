@@ -3,7 +3,7 @@ import {
   getAllTask,
   createTask,
   updateTask,
-  deleteTask
+  deleteTask,
 } from "../controllers/taskController.js";
 import {getAuth} from "../middleware/auth.js";
 
