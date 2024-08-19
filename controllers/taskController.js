@@ -2,11 +2,21 @@ import { TODO_MOCKDATA } from "../mockData.js";
 import { isEmpty } from "../utils/helper.js";
 import Task from "../models/Task.js";
 import mongoose from "mongoose";
+import { errorHandler } from "../utils/error.js";
 
 // function to get tasks
-const getAllTask = async (req, res) => {
-  const tasks = await Task.find({});
-  res.status(200).json({ success: true, data: tasks });
+const getAllTask = async (req, res, next) => {
+  console.log(req.user)
+  try {
+    if (req.user.role !== 'admin') {
+      return next(errorHandler(401, "User is not an admin"));
+    }
+
+    const tasks = await Task.find({});
+    res.status(200).json({ success: true, data: tasks });
+  } catch (error) {
+    next(error);
+  }
 };
 
 // function to create task

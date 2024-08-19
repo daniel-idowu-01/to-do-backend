@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import taskRoute from "./routes/taskRoute.js";
 import userRoute from "./routes/userRoute.js";
+import authRoute from "./routes/authRoute.js";
 import mongoose from "mongoose";
 import User from "./models/User.js";
 
@@ -25,6 +26,7 @@ app.get("/", async (req, res) => {
 
 app.use("/api/task", taskRoute);
 app.use("/api/user", userRoute);
+app.use("/api/auth", authRoute);
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500

@@ -5,13 +5,15 @@ import {
   updateTask,
   deleteTask,
 } from "../controllers/taskController.js";
-import {getAuth} from "../middleware/auth.js";
+import { getAuth } from "../middleware/auth.js";
 
 const router = expressRouter();
 
 router.get("/", getAuth, getAllTask);
 
 router.post("/", getAuth, createTask);
+
+/* router.get("/:id", getTask); */
 
 router.put("/update/:id", updateTask);
 
