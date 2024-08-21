@@ -23,7 +23,11 @@ const taskSchema = mongoose.Schema(
     },
     completed: {
       type: Boolean,
-      default: false
+      default: false,
+    },
+    comment: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Comment"
     },
   },
   {
