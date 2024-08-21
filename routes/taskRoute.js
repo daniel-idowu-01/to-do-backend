@@ -4,6 +4,8 @@ import {
   createTask,
   updateTask,
   deleteTask,
+  getTaskById,
+  getTaskByUserId,
 } from "../controllers/taskController.js";
 import { getAuth } from "../middleware/auth.js";
 
@@ -11,12 +13,14 @@ const router = expressRouter();
 
 router.get("/", getAuth, getAllTask);
 
+router.get("/:id", getAuth, getTaskById);
+
+router.get("/user/:id", getAuth, getTaskByUserId);
+
 router.post("/", getAuth, createTask);
 
-/* router.get("/:id", getTask); */
+router.put("/update/:id", getAuth, updateTask);
 
-router.put("/update/:id", updateTask);
-
-router.delete("/delete/:id", deleteTask);
+router.delete("/delete/:id", getAuth, deleteTask);
 
 export default router;

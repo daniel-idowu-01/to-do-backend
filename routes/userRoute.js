@@ -1,9 +1,9 @@
 import expressRouter from "express";
-import { getTaskByUserId } from "../controllers/taskController.js";
+import { getUserDetails } from "../controllers/userController.js";
 import { getAuth } from "../middleware/auth.js";
 
 const router = expressRouter();
 
-router.get("/task", getAuth, getTaskByUserId);
+router.get('/', getAuth, getUserDetails)
 
 export default router;

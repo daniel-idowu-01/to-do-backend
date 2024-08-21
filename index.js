@@ -6,8 +6,8 @@ import authRoute from "./routes/authRoute.js";
 import mongoose from "mongoose";
 import User from "./models/User.js";
 
-const app = express();
 dotenv.config();
+const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -15,7 +15,9 @@ app.use(express.urlencoded({ extended: true }));
 const connectDB = async () => {
   await mongoose
     .connect(process.env.MONGO_LOCAL_DB)
-    .then(() => console.log("Database connected successfully!!"))
+    .then(() => {
+      console.log("Database connected successfully!!")
+    })
     .catch(() => console.log("Cannot connect to database!!"));
 };
 await connectDB();

@@ -23,6 +23,7 @@ const taskSchema = mongoose.Schema(
     },
     completed: {
       type: Boolean,
+      default: false
     },
   },
   {

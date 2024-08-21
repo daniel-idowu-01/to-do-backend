@@ -4,11 +4,10 @@ import Task from "../models/Task.js";
 import mongoose from "mongoose";
 import { errorHandler } from "../utils/error.js";
 
-// function to get tasks
+// function to get all tasks (admin)
 const getAllTask = async (req, res, next) => {
-  console.log(req.user)
   try {
-    if (req.user.role !== 'admin') {
+    if (req.user.role !== "admin") {
       return next(errorHandler(401, "User is not an admin"));
     }
 
@@ -20,49 +19,59 @@ const getAllTask = async (req, res, next) => {
 };
 
 // function to create task
-const createTask = async (req, res) => {
+const createTask = async (req, res, next) => {
   const data = req.body;
   const { id } = req.user;
   try {
-    const newTask = await Task.create({
+    await Task.create({
       userId: id,
       ...data,
     });
     res.status(201).json({ success: true, data: "Task created successfully!" });
   } catch (error) {
-    console.log(error);
-    res.status(400).json({ success: false, data: "Cannot create task" });
+    next(error);
   }
 };
 
 // function to update task
-const updateTask = async (req, res) => {
+const updateTask = async (req, res, next) => {
   const updatedData = req.body;
   const { id } = req.params;
-
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    res.status(400).json({ success: false, data: "Id not valid" });
+  try {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      res.status(400).json({ success: false, data: "Id not valid" });
+    }
+  
+    const task = await Task.findByIdAndUpdate(id, updatedData, { new: true });
+  
+    if (task) {
+      res.status(201).json({ success: true, data: task });
+    } else {
+      res.status(400).json({ success: false, data: "Task not found" });
+    }
+  } catch (error) {
+    next(error)
   }
 
-  const task = await Task.findByIdAndUpdate(id, updatedData);
-
-  if (task) {
-    res.status(201).json({ success: true, data: task });
-  } else {
-    res.status(400).json({ success: false, data: "Task not found" });
-  }
+  
 };
 
 // function to delete task
-const deleteTask = async (req, res) => {
+const deleteTask = async (req, res, next) => {
   const { id } = req.params;
 
-  const deletedTask = await Task.findByIdAndDelete(id);
-  if (deletedTask) {
-    res.status(201).json({ success: true, data: deletedTask });
-  } else {
-    res.status(400).json({ success: false, data: "Task not found" });
+  try {
+    const deletedTask = await Task.findByIdAndDelete(id);
+    if (deletedTask) {
+      res.status(201).json({ success: true, data: "Task successfully deleted" });
+    } else {
+      res.status(400).json({ success: false, data: "Task not found" });
+    }
+    
+  } catch (error) {
+    next(error)
   }
+
 };
 
 // function to get task by user id
@@ -78,4 +87,24 @@ const getTaskByUserId = async (req, res) => {
   res.status(201).json({ success: true, data: task });
 };
 
-export { getAllTask, createTask, updateTask, deleteTask, getTaskByUserId };
+// function to get task by user id
+const getTaskById = async (req, res) => {
+  const { id } = req.params;
+
+  const task = await Task.findOne({ _id: id });
+
+  if (!task) {
+    return res.status(404).json({ success: false, data: "No task found!" });
+  }
+
+  res.status(201).json({ success: true, data: task });
+};
+
+export {
+  getAllTask,
+  createTask,
+  updateTask,
+  deleteTask,
+  getTaskByUserId,
+  getTaskById,
+};

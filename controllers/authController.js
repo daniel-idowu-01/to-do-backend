@@ -43,7 +43,7 @@ const createUser = async (req, res, next) => {
 
     res.status(201).json({ success: true, data: "User created successfully!" });
   } catch (error) {
-    console.log(error.message)
+    console.log(error.message);
     next(error);
   }
 };
@@ -52,7 +52,7 @@ const loginUser = async (req, res, next) => {
   const { email, password } = req.body;
 
   const user = await User.findOne({ email });
-  console.log(user)
+  console.log(user);
 
   if (!user) {
     return next(errorHandler(400, "User not found!"));
@@ -67,10 +67,6 @@ const loginUser = async (req, res, next) => {
   const token = jwt.sign(
     {
       id: user._id,
-      email: user.email,
-      role: user.role,
-      firstName: user.firstName,
-      lastName: user.lastName,
     },
     process.env.JWT_SECRET
   );
