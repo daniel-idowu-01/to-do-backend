@@ -5,7 +5,7 @@ import userRoute from "./routes/userRoute.js";
 import authRoute from "./routes/authRoute.js";
 import commentRoute from "./routes/commentRoute.js";
 import mongoose from "mongoose";
-import User from "./models/User.js";
+import nodemailer from "nodemailer";
 
 dotenv.config();
 const app = express();
@@ -17,11 +17,21 @@ const connectDB = async () => {
   await mongoose
     .connect(process.env.MONGO_LOCAL_DB)
     .then(() => {
-      console.log("Database connected successfully!!")
+      console.log("Database connected successfully!!");
     })
     .catch(() => console.log("Cannot connect to database!!"));
 };
 await connectDB();
+
+// connecting to nodemailer for sending emails
+export const transporter = nodemailer.createTransport({
+  host: process.env.MAIL_HOST,
+  port: process.env.MAIL_PORT,
+  auth: {
+    user: process.env.MAIL_USER,
+    pass: process.env.MAIL_PASSWORD,
+  },
+});
 
 app.get("/", async (req, res) => {
   res.send("App is running!!!");
@@ -33,13 +43,13 @@ app.use("/api/auth", authRoute);
 app.use("/api/comment", commentRoute);
 
 app.use((err, req, res, next) => {
-  const statusCode = err.statusCode || 500
-  const message = err.message || "Internal server error"
+  const statusCode = err.statusCode || 500;
+  const message = err.message || "Internal server error";
   return res.status(statusCode).json({
     success: false,
     statusCode,
-    message
-  })
-})
+    message,
+  });
+});
 
 export default app;

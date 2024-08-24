@@ -2,6 +2,7 @@ import User from "../models/User.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { errorHandler } from "../utils/error.js";
+import { sendEmail } from "../utils/helper.js";
 
 const createUser = async (req, res, next) => {
   const { firstName, lastName, email, password, role } = req.body;
@@ -79,4 +80,18 @@ const loginUser = async (req, res, next) => {
   res.status(200).json({ success: true, data: "User successfully logged in!" });
 };
 
-export { createUser, loginUser };
+const forgotPassword = async (req, res, next) => {
+  try {
+    await sendEmail(
+      "danielidowu414@gmail.com",
+      "Hello ✔",
+      "Hello world?",
+      "<h1>Hello bro<h1><p>Welcome</p>"
+    );
+    res.send("Email sent!");
+  } catch (error) {
+    next(error);
+  }
+};
+
+export { createUser, loginUser, forgotPassword };
